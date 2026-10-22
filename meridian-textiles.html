@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Meridian Textiles</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap">
+  <style>
+    :root {
+      --bg:       #F7F5F0;
+      --bg-alt:   #EDEAE0;
+      --bg-deep:  #171C15;
+      --fg:       #18190F;
+      --fg-muted: #696A56;
+      --accent:   #3B5440;
+      --accent-hi:#5B7A62;
+      --gold:     #9A7B3C;
+      --warn:     #8B3A2A;
+      --border:   #D8D4C6;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg:#111510; --bg-alt:#181E15; --bg-deep:#0A0D09;
+        --fg:#EDE9DF; --fg-muted:#9A9A80; --accent:#7FAF8A;
+        --accent-hi:#9EC4A4; --gold:#C8A458; --warn:#E07060; --border:#2B3228;
+        color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg:#111510; --bg-alt:#181E15; --bg-deep:#0A0D09;
+      --fg:#EDE9DF; --fg-muted:#9A9A80; --accent:#7FAF8A;
+      --accent-hi:#9EC4A4; --gold:#C8A458; --warn:#E07060; --border:#2B3228;
+      color-scheme: dark;
+    }
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--fg);font-family:'Jost',system-ui,sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden}
+
+    /* ANNOUNCE */
+    .announce-bar{background:var(--bg-deep);color:rgba(237,233,223,.8);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;text-align:center;padding:.6rem 1rem;overflow:hidden}
+    .announce-track{display:inline-flex;gap:4rem;animation:ticker 22s linear infinite;white-space:nowrap}
+    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .announce-sep{color:var(--gold);margin:0 .5rem}
+
+    /* NAV */
+    .site-nav{position:sticky;top:0;z-index:300;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0 2.5rem;height:64px}
+    .nav-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;font-weight:400;letter-spacing:.07em;color:var(--fg);text-decoration:none;flex-shrink:0}
+    .nav-center{display:flex;gap:2rem;list-style:none}
+    .nav-center a{font-size:.7rem;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted);text-decoration:none;transition:color .2s}
+    .nav-center a:hover{color:var(--fg)}
+    .nav-right{display:flex;gap:1.75rem;align-items:center;flex-shrink:0}
+    .nav-right a,.nav-icon-btn{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-muted);text-decoration:none;background:none;border:none;cursor:pointer;transition:color .2s;padding:0;font-family:'Jost',sans-serif;font-weight:300}
+    .nav-right a:hover,.nav-icon-btn:hover{color:var(--fg)}
+    .cart-pill{display:inline-flex;align-items:center;gap:.4rem;font-size:.7rem;color:var(--fg-muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;transition:color .2s}
+    .cart-pill:hover{color:var(--fg)}
+    .cart-count{display:inline-flex;align-items:center;justify-content:center;min-width:1.15rem;height:1.15rem;padding:0 .2rem;background:var(--accent);color:#F7F5F0;font-size:.58rem;border-radius:999px;transition:transform .15s}
+    .cart-count.bump{transform:scale(1.35)}
+    .burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+    .burger span{display:block;width:22px;height:1.5px;background:var(--fg);transition:.25s;transform-origin:center}
+    .burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+    .burger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+    .burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+    .nav-drawer{position:fixed;inset:0;z-index:290;display:flex;pointer-events:none}
+    .nav-drawer-backdrop{flex:1;background:rgba(0,0,0,0);transition:background .3s}
+    .nav-drawer-panel{width:min(320px,85vw);background:var(--bg);border-left:1px solid var(--border);transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);overflow-y:auto;padding:2rem 1.5rem;display:flex;flex-direction:column;gap:.5rem}
+    .nav-drawer.open{pointer-events:all}
+    .nav-drawer.open .nav-drawer-backdrop{background:rgba(0,0,0,.35)}
+    .nav-drawer.open .nav-drawer-panel{transform:translateX(0)}
+    .drawer-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;font-weight:400;color:var(--fg);text-decoration:none;margin-bottom:1.5rem;display:block}
+    .drawer-link{display:block;font-size:1.1rem;font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;color:var(--fg);text-decoration:none;padding:.65rem 0;border-bottom:1px solid var(--border);transition:color .2s}
+    .drawer-link:hover{color:var(--accent)}
+    .drawer-divider{border:none;border-top:1px solid var(--border);margin:1rem 0}
+    .drawer-small{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-muted);text-decoration:none;display:block;padding:.4rem 0;transition:color .2s}
+    .drawer-small:hover{color:var(--fg)}
+
+    /* BUTTONS */
+    .btn{display:inline-block;font-family:'Jost',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;padding:.9rem 2.25rem;cursor:pointer;border:none;transition:.22s;line-height:1}
+    .btn-solid{background:var(--accent);color:#F7F5F0}
+    .btn-solid:hover{background:var(--accent-hi)}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--fg)}
+    .btn-ghost:hover{border-color:var(--fg)}
+    .btn-dark-ghost{background:transparent;border:1px solid rgba(247,245,240,.3);color:#F7F5F0}
+    .btn-dark-ghost:hover{border-color:rgba(247,245,240,.7)}
+
+    /* SECTION */
+    .section{padding:5.5rem 2.5rem}
+    .section-alt{background:var(--bg-alt)}
+    .section-eyebrow{font-size:.62rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.65rem}
+    .section-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,4.5vw,3.2rem);font-weight:300;line-height:1.05;letter-spacing:-.01em;text-wrap:balance}
+    .section-header{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;margin-bottom:3rem;flex-wrap:wrap}
+    .link-arrow{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:.12rem;flex-shrink:0;align-self:flex-end;transition:color .2s}
+    .link-arrow:hover{color:var(--accent-hi)}
+
+    /* FADE IN */
+    .fade-up{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+    .fade-up.visible{opacity:1;transform:translateY(0)}
+    @media(prefers-reduced-motion:reduce){.fade-up{opacity:1;transform:none;transition:none}}
+
+    /* HERO */
+    .hero{position:relative;padding:5.5rem 2.5rem 4rem;overflow:hidden;min-height:85vh;display:flex;flex-direction:column;justify-content:center}
+    .hero-texture{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 5px,var(--border) 5px,var(--border) 6px),repeating-linear-gradient(90deg,transparent,transparent 5px,var(--border) 5px,var(--border) 6px);opacity:.1;pointer-events:none}
+    .hero-tag{display:inline-block;font-size:.63rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1.75rem}
+    .hero-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4rem,12vw,11rem);font-weight:300;line-height:.87;letter-spacing:-.03em;color:var(--fg);max-width:980px;text-wrap:balance;margin-bottom:3rem}
+    .hero-title em{font-style:italic;color:var(--accent)}
+    .hero-lower{display:flex;justify-content:space-between;align-items:flex-end;gap:2.5rem;flex-wrap:wrap}
+    .hero-desc{max-width:380px;color:var(--fg-muted);font-size:.9rem;line-height:1.85}
+    .hero-cta{display:flex;gap:.75rem;flex-wrap:wrap;flex-shrink:0}
+    .hero-metrics{display:flex;gap:3rem;margin-top:5rem;padding-top:2rem;border-top:1px solid var(--border);flex-wrap:wrap}
+    .metric-num{font-family:'Cormorant Garamond',Georgia,serif;font-size:2.4rem;font-weight:300;color:var(--fg);line-height:1;font-variant-numeric:tabular-nums}
+    .metric-label{font-size:.63rem;letter-spacing:.15em;text-transform:uppercase;color:var(--fg-muted);margin-top:.3rem}
+    .scroll-hint{position:absolute;bottom:2.5rem;right:2.5rem;display:flex;align-items:center;gap:.6rem;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-muted)}
+    .scroll-line{width:32px;height:1px;background:var(--fg-muted);position:relative;overflow:hidden}
+    .scroll-line::after{content:'';position:absolute;inset:0;background:var(--fg);animation:scanline 1.8s ease-in-out infinite}
+    @keyframes scanline{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+
+    /* CATEGORIES */
+    .categories-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
+    .cat-tile{position:relative;aspect-ratio:3/4;overflow:hidden;cursor:pointer;display:block;text-decoration:none}
+    .cat-tile canvas{width:100%;height:100%;display:block}
+    .cat-tile-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6) 0%,rgba(0,0,0,.05) 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem;transition:background .3s}
+    .cat-tile:hover .cat-tile-overlay{background:linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.12) 60%)}
+    .cat-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.35rem;font-weight:400;color:#F7F5F0;margin-bottom:.2rem}
+    .cat-count{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(247,245,240,.6)}
+
+    /* PRODUCTS */
+    .filter-tabs{display:flex;overflow-x:auto;margin-bottom:2.5rem;border-bottom:1px solid var(--border);scrollbar-width:none}
+    .filter-tabs::-webkit-scrollbar{display:none}
+    .filter-tab{font-family:'Jost',sans-serif;font-size:.68rem;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted);background:none;border:none;border-bottom:2px solid transparent;padding:.75rem 1.5rem;cursor:pointer;white-space:nowrap;transition:color .2s,border-color .2s;margin-bottom:-1px}
+    .filter-tab:hover{color:var(--fg)}
+    .filter-tab.active{color:var(--fg);border-bottom-color:var(--accent)}
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2rem 1.5rem}
+    .product-card{cursor:pointer}
+    .product-card[hidden]{display:none}
+    .product-thumb{aspect-ratio:3/4;position:relative;overflow:hidden;margin-bottom:1rem;background:var(--bg-alt)}
+    .product-thumb canvas{width:100%;height:100%;display:block}
+    .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s ease,transform .6s ease}
+    .photo.loaded{opacity:1}
+    .product-card:hover .photo.loaded,.cat-tile:hover .photo.loaded,.look-item:hover .photo.loaded{transform:scale(1.04)}
+    .product-quick{position:absolute;bottom:0;left:0;right:0;background:var(--fg);color:var(--bg);font-size:.62rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-align:center;padding:.75rem;transform:translateY(100%);transition:transform .25s;border:none;cursor:pointer;font-family:'Jost',sans-serif}
+    .product-card:hover .product-quick{transform:translateY(0)}
+    .product-badge{position:absolute;top:.75rem;left:.75rem;font-size:.58rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:.22rem .6rem}
+    .badge-new{background:var(--fg);color:var(--bg)}
+    .badge-ltd{background:var(--gold);color:#F7F5F0}
+    .badge-sale{background:var(--warn);color:#F7F5F0}
+    .product-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;font-weight:400;color:var(--fg);margin-bottom:.2rem}
+    .product-material{font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-muted);margin-bottom:.35rem}
+    .product-price-row{display:flex;gap:.75rem;align-items:baseline}
+    .product-price{font-size:.88rem;color:var(--fg)}
+    .product-price-was{font-size:.8rem;color:var(--fg-muted);text-decoration:line-through}
+
+    /* STORY */
+    .story-grid{display:grid;grid-template-columns:5fr 4fr;gap:5rem;align-items:center;max-width:1100px}
+    .story-visual{aspect-ratio:4/5;overflow:hidden;position:relative}
+    .story-visual canvas{width:100%;height:100%;display:block}
+    .story-text .section-title{margin-bottom:1.5rem}
+    .story-pull{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.15rem;font-style:italic;color:var(--accent);border-left:2px solid var(--accent);padding-left:1.25rem;margin:1.75rem 0;line-height:1.55}
+    .story-body{color:var(--fg-muted);font-size:.9rem;line-height:1.9;margin-bottom:1.1rem}
+
+    /* PROCESS */
+    .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3rem;margin-top:3rem}
+    .process-num{font-family:'Cormorant Garamond',Georgia,serif;font-size:4rem;font-weight:300;color:var(--border);line-height:1;margin-bottom:1rem;font-variant-numeric:tabular-nums}
+    .process-line{width:2.5rem;height:2px;background:var(--accent);margin-bottom:1.25rem}
+    .process-heading{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.2rem;font-weight:400;color:var(--fg);margin-bottom:.5rem}
+    .process-desc{font-size:.83rem;color:var(--fg-muted);line-height:1.75}
+
+    /* MATERIALS */
+    .materials-section{background:var(--bg-deep);padding:5.5rem 2.5rem}
+    .materials-section .section-eyebrow{color:var(--gold)}
+    .materials-section .section-title{color:#EDE9DF}
+    .materials-header{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;margin-bottom:3rem;flex-wrap:wrap}
+    .materials-link{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:.1rem;flex-shrink:0;align-self:flex-end;transition:opacity .2s}
+    .materials-link:hover{opacity:.7}
+    .materials-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:1px;background:rgba(255,255,255,.06)}
+    .material-card{background:var(--bg-deep);padding:1.75rem 1.4rem;transition:background .25s;cursor:default}
+    .material-card:hover{background:rgba(255,255,255,.04)}
+    .material-icon{width:1.75rem;height:1.75rem;opacity:.45;margin-bottom:1.15rem;color:#EDE9DF}
+    .material-icon svg{width:100%;height:100%}
+    .material-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;font-weight:400;color:#EDE9DF;margin-bottom:.2rem}
+    .material-origin{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+    .material-desc{font-size:.76rem;color:rgba(237,233,223,.42);line-height:1.65}
+
+    /* LOOKBOOK */
+    .lookbook-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:auto auto;gap:1px;background:var(--border)}
+    .look-item{position:relative;overflow:hidden;cursor:pointer}
+    .look-item:nth-child(1){grid-row:span 2;min-height:480px}
+    .look-item:nth-child(n+2){aspect-ratio:4/3}
+    .look-item canvas{width:100%;height:100%;display:block}
+    .look-item:nth-child(1) .photo{object-position:50% 15%}
+    .look-caption{position:absolute;bottom:1rem;left:1rem;right:1rem;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(247,245,240,.75);opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+    .look-item:hover .look-caption{opacity:1;transform:translateY(0)}
+
+    /* TESTIMONIALS */
+    .testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem}
+    .testi-card{border:1px solid var(--border);padding:2rem}
+    .testi-stars{display:flex;gap:3px;margin-bottom:1.25rem}
+    .star{width:10px;height:10px;background:var(--gold);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+    .testi-quote{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;font-style:italic;color:var(--fg);line-height:1.6;margin-bottom:1.5rem}
+    .testi-author{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-muted)}
+    .testi-item{font-size:.62rem;color:var(--fg-muted);margin-top:.2rem;letter-spacing:.06em}
+
+    /* PRESS */
+    .press-section{background:var(--bg-alt);padding:3.5rem 2.5rem;text-align:center}
+    .press-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-muted);margin-bottom:2rem}
+    .press-logos{display:flex;justify-content:center;align-items:center;gap:3rem 4rem;flex-wrap:wrap}
+    .press-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.35rem;font-weight:600;color:var(--fg-muted);letter-spacing:.04em;opacity:.5;transition:opacity .2s;cursor:default}
+    .press-name:hover{opacity:.8}
+    .press-name.italic{font-style:italic}
+    .press-name.sans-sm{font-family:'Jost',sans-serif;font-weight:400;font-size:.85rem;letter-spacing:.22em;text-transform:uppercase}
+
+    /* CRAFTED BANNER */
+    .crafted-banner{background:var(--accent);padding:3rem 2.5rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+    .crafted-quote{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:300;font-style:italic;color:#F7F5F0;text-wrap:balance}
+    .crafted-detail{font-size:.78rem;color:rgba(247,245,240,.6);max-width:280px;line-height:1.7;flex-shrink:0}
+
+    /* NEWSLETTER */
+    .newsletter{text-align:center}
+    .newsletter .section-title{margin-bottom:.75rem}
+    .nl-sub{color:var(--fg-muted);font-size:.88rem;margin-bottom:2.5rem}
+    .nl-form{display:flex;max-width:430px;margin:0 auto}
+    .nl-input{flex:1;min-width:0;padding:.88rem 1.2rem;background:var(--bg);border:1px solid var(--border);border-right:none;color:var(--fg);font-family:'Jost',sans-serif;font-size:.82rem;outline:none;transition:border-color .2s}
+    .nl-input:focus{border-color:var(--accent)}
+    .nl-input::placeholder{color:var(--fg-muted)}
+    .nl-btn{flex-shrink:0;padding:.88rem 1.6rem;background:var(--accent);color:#F7F5F0;font-family:'Jost',sans-serif;font-size:.67rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;border:none;cursor:pointer;transition:background .22s}
+    .nl-btn:hover{background:var(--accent-hi)}
+    .nl-success{color:var(--accent);font-size:.88rem;margin-top:1.25rem;display:none}
+    .nl-perks{display:flex;justify-content:center;gap:2.5rem;margin-top:2.5rem;flex-wrap:wrap}
+    .nl-perk{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-muted);display:flex;align-items:center;gap:.4rem}
+    .nl-perk::before{content:'—';color:var(--gold)}
+
+    /* FOOTER */
+    footer{background:var(--bg-deep);padding:5rem 2.5rem 2.5rem}
+    .footer-grid{display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:4rem}
+    .footer-brand-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.6rem;font-weight:400;color:#EDE9DF;margin-bottom:.75rem;letter-spacing:.05em}
+    .footer-tagline{font-size:.77rem;color:rgba(237,233,223,.35);line-height:1.8;max-width:210px;margin-bottom:1.5rem}
+    .footer-socials{display:flex;gap:1rem}
+    .footer-social{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(237,233,223,.35);text-decoration:none;transition:color .2s}
+    .footer-social:hover{color:rgba(237,233,223,.7)}
+    .footer-col-title{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(237,233,223,.5);margin-bottom:1.25rem}
+    .footer-links{list-style:none;display:flex;flex-direction:column;gap:.65rem}
+    .footer-links a{font-size:.77rem;color:rgba(237,233,223,.35);text-decoration:none;transition:color .2s}
+    .footer-links a:hover{color:rgba(237,233,223,.75)}
+    .footer-certifications{display:flex;gap:1rem;margin-top:.5rem;flex-wrap:wrap}
+    .cert-badge{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(237,233,223,.3);border:1px solid rgba(237,233,223,.12);padding:.22rem .5rem}
+    .footer-divider{border:none;border-top:1px solid rgba(255,255,255,.06);margin-bottom:1.5rem}
+    .footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.75rem;font-size:.67rem;color:rgba(237,233,223,.2)}
+    .footer-bottom a{color:rgba(237,233,223,.2);text-decoration:none;transition:color .2s}
+    .footer-bottom a:hover{color:rgba(237,233,223,.5)}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120%);background:var(--fg);color:var(--bg);font-size:.78rem;letter-spacing:.06em;padding:.75rem 1.5rem;z-index:999;transition:transform .3s cubic-bezier(.4,0,.2,1);white-space:nowrap;pointer-events:none}
+    .toast.show{transform:translateX(-50%) translateY(0)}
+
+    /* RESPONSIVE */
+    @media(max-width:1024px){.categories-grid{grid-template-columns:repeat(2,1fr)}.process-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:860px){.story-grid{grid-template-columns:1fr;gap:2.5rem}.testimonials-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.lookbook-grid{grid-template-columns:1fr 1fr}.lookbook-grid .look-item:nth-child(1){grid-column:span 2;grid-row:span 1}}
+    @media(max-width:640px){.site-nav{padding:0 1.25rem}.nav-center{display:none}.nav-right .nav-hide-mobile{display:none}.burger{display:flex}.hero{padding:3rem 1.25rem 3.5rem;min-height:auto}.hero-metrics{gap:2rem}.section{padding:3.5rem 1.25rem}.materials-section{padding:3.5rem 1.25rem}.press-section{padding:3rem 1.25rem}.crafted-banner{padding:2.25rem 1.25rem}footer{padding:3.5rem 1.25rem 2rem}.footer-grid{grid-template-columns:1fr;gap:2rem}.products-grid{grid-template-columns:repeat(2,1fr);gap:1rem}.nl-form{flex-direction:column}.nl-input{border-right:1px solid var(--border);border-bottom:none}.process-grid{grid-template-columns:1fr;gap:2rem}.categories-grid{grid-template-columns:repeat(2,1fr)}.lookbook-grid{grid-template-columns:1fr}.lookbook-grid .look-item:nth-child(1){grid-column:unset}.scroll-hint{display:none}.testimonials-grid{grid-template-columns:1fr}}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  </style>
+</head>
+<body>
+
+<div class="announce-bar" aria-live="polite">
+  <div class="announce-track" aria-hidden="true">
+    <span>Free delivery on orders over £150</span><span class="announce-sep">✦</span>
+    <span>Complimentary returns within 60 days</span><span class="announce-sep">✦</span>
+    <span>B Corp Certified — people &amp; planet first</span><span class="announce-sep">✦</span>
+    <span>AW26 Collection — now available</span><span class="announce-sep">✦</span>
+    <span>Free delivery on orders over £150</span><span class="announce-sep">✦</span>
+    <span>Complimentary returns within 60 days</span><span class="announce-sep">✦</span>
+    <span>B Corp Certified — people &amp; planet first</span><span class="announce-sep">✦</span>
+    <span>AW26 Collection — now available</span><span class="announce-sep">✦</span>
+  </div>
+</div>
+
+<nav class="site-nav">
+  <a href="#" class="nav-logo">Meridian</a>
+  <ul class="nav-center" role="list">
+    <li><a href="#collections">Collections</a></li>
+    <li><a href="#story">Our Craft</a></li>
+    <li><a href="#materials">Materials</a></li>
+    <li><a href="#lookbook">Lookbook</a></li>
+    <li><a href="#stockists">Stockists</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#" class="nav-hide-mobile">Search</a>
+    <a href="#" class="nav-hide-mobile">Account</a>
+    <a href="#" class="cart-pill" id="cart-link" aria-label="Shopping bag">Bag<span class="cart-count" id="cart-count">2</span></a>
+    <button class="burger" id="burger-btn" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="nav-drawer" id="nav-drawer" aria-hidden="true">
+  <div class="nav-drawer-backdrop" id="drawer-backdrop"></div>
+  <div class="nav-drawer-panel">
+    <a href="#" class="drawer-logo">Meridian</a>
+    <a href="#collections" class="drawer-link">Collections</a>
+    <a href="#story" class="drawer-link">Our Craft</a>
+    <a href="#materials" class="drawer-link">Materials</a>
+    <a href="#lookbook" class="drawer-link">Lookbook</a>
+    <a href="#stockists" class="drawer-link">Stockists</a>
+    <a href="#" class="drawer-link">Journal</a>
+    <hr class="drawer-divider">
+    <a href="#" class="drawer-small">Account</a>
+    <a href="#" class="drawer-small">Search</a>
+    <a href="#" class="drawer-small">Contact</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-texture" aria-hidden="true"></div>
+  <p class="hero-tag">Autumn / Winter 2026</p>
+  <h1 class="hero-title">Cloth made<br>to <em>outlast</em><br>the season</h1>
+  <div class="hero-lower">
+    <p class="hero-desc">Meridian sources and weaves exceptional natural fibres — linen, merino, cashmere — into garments cut for everyday use and kept for decades. Slow fashion, without the rhetoric.</p>
+    <div class="hero-cta">
+      <a href="#collections" class="btn btn-solid">Shop the Collection</a>
+      <a href="#story" class="btn btn-ghost">Our Story</a>
+    </div>
+  </div>
+  <div class="hero-metrics">
+    <div><div class="metric-num">14</div><div class="metric-label">Mill Partners</div></div>
+    <div><div class="metric-num">38</div><div class="metric-label">Yarn Origins</div></div>
+    <div><div class="metric-num">100%</div><div class="metric-label">Natural Fibre</div></div>
+    <div><div class="metric-num">B Corp</div><div class="metric-label">Certified 2019</div></div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">Scroll <span class="scroll-line"></span></div>
+</section>
+
+<div class="categories-grid" id="categories" aria-label="Shop by category">
+  <a href="#collections" class="cat-tile fade-up" data-cat-filter="shirts" aria-label="Shirts &amp; Tops">
+    <canvas id="cat-shirts"></canvas>
+    <div class="cat-tile-overlay"><div class="cat-name">Shirts &amp; Tops</div><div class="cat-count">4 pieces</div></div>
+  </a>
+  <a href="#collections" class="cat-tile fade-up" data-cat-filter="knitwear" aria-label="Knitwear" style="transition-delay:.1s">
+    <canvas id="cat-knitwear"></canvas>
+    <div class="cat-tile-overlay"><div class="cat-name">Knitwear</div><div class="cat-count">3 pieces</div></div>
+  </a>
+  <a href="#collections" class="cat-tile fade-up" data-cat-filter="trousers" aria-label="Trousers" style="transition-delay:.2s">
+    <canvas id="cat-trousers"></canvas>
+    <div class="cat-tile-overlay"><div class="cat-name">Trousers</div><div class="cat-count">3 pieces</div></div>
+  </a>
+  <a href="#collections" class="cat-tile fade-up" data-cat-filter="outerwear" aria-label="Outerwear" style="transition-delay:.3s">
+    <canvas id="cat-outerwear"></canvas>
+    <div class="cat-tile-overlay"><div class="cat-name">Outerwear</div><div class="cat-count">3 pieces</div></div>
+  </a>
+</div>
+
+<section class="section section-alt" id="collections">
+  <div class="section-header">
+    <div><p class="section-eyebrow">AW26 Collection</p><h2 class="section-title">The Weave Edit</h2></div>
+    <a href="#" class="link-arrow">View all pieces</a>
+  </div>
+  <div class="filter-tabs" role="tablist">
+    <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">All</button>
+    <button class="filter-tab" data-filter="shirts" role="tab" aria-selected="false">Shirts &amp; Tops</button>
+    <button class="filter-tab" data-filter="knitwear" role="tab" aria-selected="false">Knitwear</button>
+    <button class="filter-tab" data-filter="trousers" role="tab" aria-selected="false">Trousers</button>
+    <button class="filter-tab" data-filter="outerwear" role="tab" aria-selected="false">Outerwear</button>
+  </div>
+  <div class="products-grid" id="products-grid"></div>
+</section>
+
+<section class="section" id="story">
+  <div class="story-grid">
+    <div class="story-visual fade-up"><canvas id="story-canvas"></canvas></div>
+    <div class="story-text fade-up" style="transition-delay:.15s">
+      <p class="section-eyebrow">Our Craft</p>
+      <h2 class="section-title">Woven with patience,<br>finished by hand</h2>
+      <blockquote class="story-pull">"A shirt cut in 100-thread linen should feel better at five years than at five minutes."</blockquote>
+      <p class="story-body">Every Meridian garment begins at the loom. We work directly with seven family-run mills across Portugal, Japan, and Ireland — places where the vocabulary of fabric is still passed person to person, season to season.</p>
+      <p class="story-body">We commission yarn weights and weave structures the market doesn't offer off the shelf, then cut and finish in our Lisbon atelier. The result is cloth that drapes, breathes, and wears in — rather than wearing out.</p>
+      <a href="#" class="btn btn-ghost" style="margin-top:.75rem">Meet the makers</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <p class="section-eyebrow">How We Work</p>
+  <h2 class="section-title">From field to finished cloth</h2>
+  <div class="process-grid">
+    <div class="process-step fade-up"><div class="process-num">01</div><div class="process-line"></div><h3 class="process-heading">Source</h3><p class="process-desc">We identify farms and mills that share our standards — traceability from raw fibre, fair pay throughout, and no synthetic shortcuts.</p></div>
+    <div class="process-step fade-up" style="transition-delay:.1s"><div class="process-num">02</div><div class="process-line"></div><h3 class="process-heading">Commission</h3><p class="process-desc">Custom yarn weights and weave structures — nothing off the shelf. Each season we develop constructions specific to the garments we have in mind.</p></div>
+    <div class="process-step fade-up" style="transition-delay:.2s"><div class="process-num">03</div><div class="process-line"></div><h3 class="process-heading">Construct</h3><p class="process-desc">Cut and assembled in our Lisbon atelier by 24 artisan tailors, each trained for a minimum of three years before touching a finished garment.</p></div>
+    <div class="process-step fade-up" style="transition-delay:.3s"><div class="process-num">04</div><div class="process-line"></div><h3 class="process-heading">Finish</h3><p class="process-desc">Every seam pressed. Every button hand-sewn. Every piece inspected before dispatch. No exceptions, regardless of volume or deadline.</p></div>
+  </div>
+</section>
+
+<section class="materials-section" id="materials">
+  <div class="materials-header">
+    <div><p class="section-eyebrow">The Fibres</p><h2 class="section-title">Raw material,<br>honestly sourced</h2></div>
+    <a href="#" class="materials-link">Full sourcing guide</a>
+  </div>
+  <div class="materials-grid" id="materials-grid"></div>
+</section>
+
+<section class="section" id="lookbook">
+  <div class="section-header">
+    <div><p class="section-eyebrow">AW26 Lookbook</p><h2 class="section-title">Cloth in context</h2></div>
+    <a href="#" class="link-arrow">Full lookbook</a>
+  </div>
+  <div class="lookbook-grid">
+    <div class="look-item fade-up"><canvas id="look-main"></canvas><div class="look-caption">The Heritage Coat — Irish Boiled Wool, AW26</div></div>
+    <div class="look-item fade-up" style="transition-delay:.1s"><canvas id="look-2"></canvas><div class="look-caption">Linen Collarless Shirt — Portuguese Linen</div></div>
+    <div class="look-item fade-up" style="transition-delay:.15s"><canvas id="look-3"></canvas><div class="look-caption">Cashmere Cardigan — Inner Mongolia</div></div>
+    <div class="look-item fade-up" style="transition-delay:.2s"><canvas id="look-4"></canvas><div class="look-caption">Flannel Wide-Leg Trouser — Biella</div></div>
+    <div class="look-item fade-up" style="transition-delay:.25s"><canvas id="look-5"></canvas><div class="look-caption">Merino Rolled-Neck — Patagonia</div></div>
+  </div>
+</section>
+
+<div class="crafted-banner">
+  <p class="crafted-quote">"Every seam is pressed. Every button hand-sewn. No exceptions."</p>
+  <p class="crafted-detail">Our Lisbon atelier employs 24 artisan tailors, each trained for a minimum of three years before touching a finished garment.</p>
+  <a href="#story" class="btn btn-dark-ghost">Visit the atelier</a>
+</div>
+
+<section class="section">
+  <p class="section-eyebrow">Worn &amp; Kept</p>
+  <h2 class="section-title">What our customers say</h2>
+  <div class="testimonials-grid">
+    <div class="testi-card fade-up">
+      <div class="testi-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-quote">"The linen shirt I bought three years ago has become softer with every wash. Still my most-worn piece — I can't imagine wearing anything else in summer."</p>
+      <div class="testi-author">Oliver T., Edinburgh</div><div class="testi-item">Linen Collarless Shirt · Purchased 2023</div>
+    </div>
+    <div class="testi-card fade-up" style="transition-delay:.1s">
+      <div class="testi-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-quote">"Finally a cashmere cardigan that isn't a compromise. The weight and drape are extraordinary. I've worn it more in four months than anything else I own."</p>
+      <div class="testi-author">Sara M., Copenhagen</div><div class="testi-item">Cashmere Cardigan · Purchased 2025</div>
+    </div>
+    <div class="testi-card fade-up" style="transition-delay:.2s">
+      <div class="testi-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="testi-quote">"I've bought three pairs of these trousers in different cloths. The construction is meticulous — you can feel it every time you put them on. Worth every penny."</p>
+      <div class="testi-author">James H., London</div><div class="testi-item">Heritage Check Trouser · Purchased 2024</div>
+    </div>
+  </div>
+</section>
+
+<div class="press-section" id="stockists">
+  <p class="press-label">As seen in</p>
+  <div class="press-logos">
+    <span class="press-name italic">The Guardian</span>
+    <span class="press-name">Monocle</span>
+    <span class="press-name italic" style="font-size:1.5rem">Financial Times</span>
+    <span class="press-name sans-sm">Wallpaper*</span>
+    <span class="press-name italic">Vogue UK</span>
+    <span class="press-name sans-sm">Esquire</span>
+  </div>
+</div>
+
+<section class="section newsletter">
+  <p class="section-eyebrow">The Meridian Thread</p>
+  <h2 class="section-title">Seasonal notes on cloth,<br>craft, and new pieces</h2>
+  <p class="nl-sub">One letter per season. No noise, no promotions — just the work.</p>
+  <form class="nl-form" id="nl-form" novalidate>
+    <input class="nl-input" id="nl-email" type="email" placeholder="your@email.com" aria-label="Email address" required>
+    <button type="submit" class="nl-btn">Subscribe</button>
+  </form>
+  <p class="nl-success" id="nl-success" role="status">You're on the list. Look out for the next edition.</p>
+  <div class="nl-perks">
+    <span class="nl-perk">No spam, ever</span>
+    <span class="nl-perk">Early access to new pieces</span>
+    <span class="nl-perk">Unsubscribe anytime</span>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">Meridian</div>
+      <p class="footer-tagline">Weaving natural fibres into enduring garments since 2009. Atelier in Lisbon, Portugal.</p>
+      <div class="footer-socials"><a href="#" class="footer-social">Instagram</a><a href="#" class="footer-social">Pinterest</a><a href="#" class="footer-social">Newsletter</a></div>
+      <div class="footer-certifications" style="margin-top:1.25rem"><span class="cert-badge">B Corp</span><span class="cert-badge">GOTS Certified</span><span class="cert-badge">Carbon Neutral</span></div>
+    </div>
+    <div>
+      <div class="footer-col-title">Shop</div>
+      <ul class="footer-links"><li><a href="#">New Arrivals</a></li><li><a href="#">Shirts &amp; Tops</a></li><li><a href="#">Knitwear</a></li><li><a href="#">Trousers</a></li><li><a href="#">Outerwear</a></li><li><a href="#">Archive Sale</a></li></ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links"><li><a href="#">Our Story</a></li><li><a href="#">The Atelier</a></li><li><a href="#">Materials</a></li><li><a href="#">Sustainability</a></li><li><a href="#">Stockists</a></li><li><a href="#">Journal</a></li></ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Help</div>
+      <ul class="footer-links"><li><a href="#">Sizing &amp; Fit</a></li><li><a href="#">Delivery</a></li><li><a href="#">Returns</a></li><li><a href="#">Care Guide</a></li><li><a href="#">Gift Cards</a></li><li><a href="#">Contact Us</a></li></ul>
+    </div>
+  </div>
+  <hr class="footer-divider">
+  <div class="footer-bottom">
+    <span>© 2026 Meridian Textiles Ltd. All rights reserved.</span>
+    <span><a href="#">Privacy Policy</a> · <a href="#">Terms &amp; Conditions</a> · <a href="#">Cookie Settings</a></span>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ─── DATA ─────────────────────────────────────────── */
+const PRODUCTS = [
+  { id:1,  name:'Linen Collarless Shirt',    material:'Portuguese Linen',   price:'£185', was:null,   badge:null,   cat:'shirts',    shape:'shirt',     bg:'#B8A882', g:'#E0D5B8', detail:'collarless' },
+  { id:2,  name:'Merino Rolled-Neck',        material:'Merino Wool',        price:'£220', was:null,   badge:'New',  cat:'knitwear',  shape:'rollneck',  bg:'#203040', g:'#2E4462' },
+  { id:3,  name:'Heritage Check Trouser',    material:'Biella Wool Blend',  price:'£275', was:null,   badge:null,   cat:'trousers',  shape:'trouser',   bg:'#304535', g:'#415E48', detail:'check' },
+  { id:4,  name:'Egyptian Cotton Overshirt', material:'Egyptian Cotton',    price:'£195', was:null,   badge:null,   cat:'shirts',    shape:'shirt',     bg:'#7A6A58', g:'#A89880', detail:'overshirt' },
+  { id:5,  name:'Cashmere Cardigan',         material:'Pure Cashmere',      price:'£380', was:null,   badge:'Ltd',  cat:'knitwear',  shape:'cardigan',  bg:'#A88050', g:'#CEAA78' },
+  { id:6,  name:'Stonewashed Linen Trouser', material:'Stonewashed Linen',  price:'£230', was:null,   badge:null,   cat:'trousers',  shape:'trouser',   bg:'#607870', g:'#82A09A' },
+  { id:7,  name:'Boiled Wool Coat',          material:'Irish Boiled Wool',  price:'£485', was:null,   badge:null,   cat:'outerwear', shape:'coat',      bg:'#2A2A28', g:'#484844' },
+  { id:8,  name:'Irish Linen Blazer',        material:'Portadown Linen',    price:'£420', was:null,   badge:'New',  cat:'outerwear', shape:'blazer',    bg:'#B8A880', g:'#DDD0A8' },
+  { id:9,  name:'Merino Waffle Top',         material:'Super-Fine Merino',  price:'£155', was:'£165', badge:'Sale', cat:'shirts',    shape:'crew',      bg:'#785848', g:'#9E7B68', detail:'waffle' },
+  { id:10, name:'Flannel Wide-Leg Trouser',  material:'Biella Flannel',     price:'£295', was:null,   badge:null,   cat:'trousers',  shape:'trouser',   bg:'#3E2848', g:'#5A3E68', detail:'wide' },
+  { id:11, name:'Lambswool Crew',            material:'Scottish Lambswool', price:'£245', was:null,   badge:null,   cat:'knitwear',  shape:'crew',      bg:'#884830', g:'#B06848' },
+  { id:12, name:'Waxed Cotton Jacket',       material:'Organic Cotton',     price:'£365', was:null,   badge:null,   cat:'outerwear', shape:'jacket',    bg:'#283020', g:'#3E4E38' },
+];
+
+const MATERIALS = [
+  { name:'Merino Wool',     origin:'Patagonia, Argentina', desc:'17.5-micron super-fine. Temperature-regulating and naturally odour-resistant.' },
+  { name:'Egyptian Cotton', origin:'Giza, Egypt',          desc:'Extra-long staple, woven to 200 threads per inch for exceptional drape.' },
+  { name:'Pure Linen',      origin:'Portadown, Ireland',   desc:'Flax-spun and water-retted. Softens with every wash. Lasts decades.' },
+  { name:'Cashmere',        origin:'Inner Mongolia',       desc:'Grade-A undercoat, hand-combed in spring. Spun to a 2-ply count.' },
+  { name:'Wool Flannel',    origin:'Biella, Italy',        desc:'Milled in the foothills using techniques unchanged since 1897.' },
+  { name:'Organic Hemp',    origin:'Normandy, France',     desc:'Carbon-negative cultivation, UV-resistant, naturally antimicrobial.' },
+];
+
+/* ─── CANVAS CORE ───────────────────────────────────── */
+function setupCanvas(c) {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const w = c.offsetWidth, h = c.offsetHeight;
+  if (!w || !h) return null;
+  c.width = w * dpr; c.height = h * dpr;
+  const ctx = c.getContext('2d');
+  ctx.scale(dpr, dpr);
+  return { ctx, w, h };
+}
+
+function vignette(ctx, w, h, a = .28) {
+  const g = ctx.createRadialGradient(w/2,h/2,h*.08,w/2,h/2,h*.9);
+  g.addColorStop(0, 'rgba(0,0,0,0)');
+  g.addColorStop(1, `rgba(0,0,0,${a})`);
+  ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+}
+
+function weaveTexture(ctx, w, h, col, sz = 5, alpha = .18) {
+  ctx.fillStyle = col; ctx.globalAlpha = alpha;
+  for (let cx = 0; cx*sz < w+sz; cx++)
+    for (let cy = 0; cy*sz < h+sz; cy++)
+      if ((cx+cy)%2===0) ctx.fillRect(cx*sz, cy*sz, sz, sz);
+  ctx.globalAlpha = 1;
+}
+
+/* ─── GARMENT SHAPES ────────────────────────────────── */
+function shadow(ctx) {
+  ctx.shadowColor = 'rgba(0,0,0,.22)';
+  ctx.shadowBlur = 22; ctx.shadowOffsetY = 8;
+}
+function clearShadow(ctx) {
+  ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+}
+
+/* SHIRT / OVERSHIRT / CREW-NECK */
+function gShirt(ctx, w, h, fill, variant) {
+  const cx = w*.5;
+  const isOver = variant === 'overshirt';
+  const isBand = variant === 'collarless';
+  shadow(ctx); ctx.fillStyle = fill; ctx.beginPath();
+  if (isBand) {
+    ctx.moveTo(cx-w*.10, h*.09);
+    ctx.lineTo(cx+w*.10, h*.09);
+  } else if (isOver) {
+    ctx.moveTo(cx-w*.12, h*.08);
+    ctx.quadraticCurveTo(cx-w*.06, h*.06, cx, h*.06);
+    ctx.quadraticCurveTo(cx+w*.06, h*.06, cx+w*.12, h*.08);
+  } else {
+    ctx.moveTo(cx-w*.11, h*.09);
+    ctx.quadraticCurveTo(cx, h*.15, cx+w*.11, h*.09);
+  }
+  ctx.lineTo(cx+w*.31, h*.07);
+  ctx.lineTo(cx+w*.41, h*.16);
+  ctx.lineTo(cx+w*.41, h*.38);
+  ctx.lineTo(cx+w*.33, h*.40);
+  ctx.quadraticCurveTo(cx+w*.27, h*.35, cx+w*.26, h*.44);
+  ctx.lineTo(cx+w*.26, h*.87);
+  ctx.quadraticCurveTo(cx, h*.90, cx-w*.26, h*.87);
+  ctx.lineTo(cx-w*.26, h*.44);
+  ctx.quadraticCurveTo(cx-w*.27, h*.35, cx-w*.33, h*.40);
+  ctx.lineTo(cx-w*.41, h*.38);
+  ctx.lineTo(cx-w*.41, h*.16);
+  ctx.lineTo(cx-w*.31, h*.07);
+  if (isBand) ctx.lineTo(cx-w*.10, h*.09);
+  ctx.closePath(); ctx.fill(); clearShadow(ctx);
+  // placket
+  ctx.strokeStyle = 'rgba(0,0,0,.10)'; ctx.lineWidth = .7;
+  ctx.beginPath(); ctx.moveTo(cx, h*.12); ctx.lineTo(cx, h*.87); ctx.stroke();
+  // buttons
+  const bpos = isOver ? [.30,.42,.54,.66,.78] : [.38,.52,.66];
+  bpos.forEach(p => { ctx.beginPath(); ctx.arc(cx, h*p, 1.8, 0, Math.PI*2); ctx.fillStyle='rgba(0,0,0,.18)'; ctx.fill(); });
+  // chest pocket for overshirt
+  if (isOver) {
+    ctx.strokeStyle = 'rgba(0,0,0,.12)'; ctx.lineWidth = .8;
+    ctx.strokeRect(cx+w*.07, h*.26, w*.13, h*.08);
+  }
+  // band collar rect
+  if (isBand) {
+    ctx.fillStyle = 'rgba(0,0,0,.07)';
+    ctx.fillRect(cx-w*.10, h*.06, w*.20, h*.03);
+  }
+}
+
+/* ROLL-NECK */
+function gRollneck(ctx, w, h, fill) {
+  const cx = w*.5;
+  shadow(ctx); ctx.fillStyle = fill; ctx.beginPath();
+  ctx.moveTo(cx-w*.09, h*.18);
+  ctx.lineTo(cx+w*.09, h*.18);
+  ctx.lineTo(cx+w*.30, h*.11);
+  ctx.lineTo(cx+w*.40, h*.19);
+  ctx.lineTo(cx+w*.40, h*.40);
+  ctx.lineTo(cx+w*.32, h*.42);
+  ctx.quadraticCurveTo(cx+w*.26, h*.37, cx+w*.26, h*.46);
+  ctx.lineTo(cx+w*.26, h*.88);
+  ctx.quadraticCurveTo(cx, h*.91, cx-w*.26, h*.88);
+  ctx.lineTo(cx-w*.26, h*.46);
+  ctx.quadraticCurveTo(cx-w*.26, h*.37, cx-w*.32, h*.42);
+  ctx.lineTo(cx-w*.40, h*.40);
+  ctx.lineTo(cx-w*.40, h*.19);
+  ctx.lineTo(cx-w*.30, h*.11);
+  ctx.closePath(); ctx.fill(); clearShadow(ctx);
+  // neck tube
+  ctx.fillStyle = 'rgba(0,0,0,.10)';
+  ctx.beginPath();
+  ctx.moveTo(cx-w*.09, h*.05); ctx.lineTo(cx-w*.09, h*.18);
+  ctx.quadraticCurveTo(cx, h*.22, cx+w*.09, h*.18);
+  ctx.lineTo(cx+w*.09, h*.05);
+  ctx.quadraticCurveTo(cx, h*.01, cx-w*.09, h*.05);
+  ctx.closePath(); ctx.fill();
+  // rib lines
+  ctx.strokeStyle = 'rgba(0,0,0,.07)'; ctx.lineWidth = .5;
+  for (let i = 0; i < 4; i++) {
+    const y = h*.85 + i*(h*.025);
+    ctx.beginPath(); ctx.moveTo(cx-w*.26, y); ctx.lineTo(cx+w*.26, y); ctx.stroke();
+  }
+}
+
+/* CREW NECK / WAFFLE TOP */
+function gCrew(ctx, w, h, fill, waffle) {
+  const cx = w*.5;
+  shadow(ctx); ctx.fillStyle = fill; ctx.beginPath();
+  ctx.moveTo(cx-w*.13, h*.09);
+  ctx.quadraticCurveTo(cx, h*.15, cx+w*.13, h*.09);
+  ctx.lineTo(cx+w*.30, h*.09);
+  ctx.lineTo(cx+w*.40, h*.17);
+  ctx.lineTo(cx+w*.40, h*.40);
+  ctx.lineTo(cx+w*.32, h*.42);
+  ctx.quadraticCurveTo(cx+w*.26, h*.37, cx+w*.26, h*.46);
+  ctx.lineTo(cx+w*.26, h*.88);
+  ctx.quadraticCurveTo(cx, h*.91, cx-w*.26, h*.88);
+  ctx.lineTo(cx-w*.26, h*.46);
+  ctx.quadraticCurveTo(cx-w*.26, h*.37, cx-w*.32, h*.42);
+  ctx.lineTo(cx-w*.40, h*.40);
+  ctx.lineTo(cx-w*.40, h*.17);
+  ctx.lineTo(cx-w*.30, h*.09);
+  ctx.closePath(); ctx.fill(); clearShadow(ctx);
+  // crew collar
+  ctx.strokeStyle = 'rgba(0,0,0,.12)'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(cx-w*.13, h*.09); ctx.quadraticCurveTo(cx, h*.15, cx+w*.13, h*.09); ctx.stroke();
+  if (waffle) {
+    ctx.save(); ctx.globalAlpha = .08; ctx.strokeStyle = 'rgba(0,0,0,1)'; ctx.lineWidth = .5;
+    const gs = 9;
+    for (let y = h*.09; y < h*.88; y += gs) { ctx.beginPath(); ctx.moveTo(cx-w*.26,y); ctx.lineTo(cx+w*.26,y); ctx.stroke(); }
+    for (let x = cx-w*.26; x < cx+w*.26; x += gs) { ctx.beginPath(); ctx.moveTo(x,h*.09); ctx.lineTo(x,h*.88); ctx.stroke(); }
+    ctx.restore();
+  }
+}
+
+/* CARDIGAN */
+function gCardigan(ctx, w, h, fill) {
+  const cx = w*.5;
+  shadow(ctx); ctx.fillStyle = fill;
+  // Left panel
+  ctx.beginPath();
+  ctx.moveTo(cx-w*.04, h*.08); ctx.lineTo(cx-w*.04, h*.22);
+  ctx.lineTo(cx-w*.03, h*.87); ctx.lineTo(cx-w*.28, h*.87);
+  ctx.lineTo(cx-w*.28, h*.46); ctx.quadraticCurveTo(cx-w*.28,h*.36, cx-w*.34,h*.42);
+  ctx.lineTo(cx-w*.42, h*.40); ctx.lineTo(cx-w*.42, h*.19);
+  ctx.lineTo(cx-w*.30, h*.09); ctx.closePath(); ctx.fill();
+  // Right panel
+  ctx.beginPath();
+  ctx.moveTo(cx+w*.04, h*.08); ctx.lineTo(cx+w*.04, h*.22);
+  ctx.lineTo(cx+w*.03, h*.87); ctx.lineTo(cx+w*.28, h*.87);
+  ctx.lineTo(cx+w*.28, h*.46); ctx.quadraticCurveTo(cx+w*.28,h*.36, cx+w*.34,h*.42);
+  ctx.lineTo(cx+w*.42, h*.40); ctx.lineTo(cx+w*.42, h*.19);
+  ctx.lineTo(cx+w*.30, h*.09); ctx.closePath(); ctx.fill();
+  clearShadow(ctx);
+  // V neckline
+  ctx.strokeStyle = 'rgba(0,0,0,.1)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(cx-w*.04, h*.08); ctx.lineTo(cx, h*.28); ctx.lineTo(cx+w*.04, h*.08); ctx.stroke();
+  // buttons
+  [.32,.44,.56,.68,.80].forEach(p => { ctx.beginPath(); ctx.arc(cx,h*p,2,0,Math.PI*2); ctx.fillStyle='rgba(0,0,0,.20)'; ctx.fill(); });
+}
+
+/* TROUSER */
+function gTrouser(ctx, w, h, fill, wide, check) {
+  const cx = w*.5;
+  const lw = wide ? w*.26 : w*.20;
+  shadow(ctx); ctx.fillStyle = fill;
+  // Left leg
+  ctx.beginPath();
+  ctx.moveTo(cx-lw*2, h*.07); ctx.lineTo(cx-lw*2, h*.44);
+  ctx.bezierCurveTo(cx-lw*2, h*.52, cx-lw*.5, h*.50, cx-lw*.1, h*.50);
+  ctx.lineTo(cx-lw*.1, h*.95); ctx.lineTo(cx-lw*2, h*.95);
+  ctx.lineTo(cx-lw*2, h*.44); ctx.closePath(); ctx.fill();
+  // Right leg
+  ctx.beginPath();
+  ctx.moveTo(cx+lw*2, h*.07); ctx.lineTo(cx+lw*2, h*.44);
+  ctx.bezierCurveTo(cx+lw*2, h*.52, cx+lw*.5, h*.50, cx+lw*.1, h*.50);
+  ctx.lineTo(cx+lw*.1, h*.95); ctx.lineTo(cx+lw*2, h*.95);
+  ctx.lineTo(cx+lw*2, h*.44); ctx.closePath(); ctx.fill();
+  clearShadow(ctx);
+  // Waistband
+  ctx.fillStyle = 'rgba(0,0,0,.10)'; ctx.fillRect(cx-lw*2, h*.07, lw*4, h*.05);
+  // Crease
+  ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth = .7;
+  ctx.beginPath(); ctx.moveTo(cx-lw, h*.50); ctx.lineTo(cx-lw, h*.95); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx+lw, h*.50); ctx.lineTo(cx+lw, h*.95); ctx.stroke();
+  if (check) {
+    ctx.save(); ctx.globalAlpha = .14; ctx.strokeStyle = 'rgba(255,255,255,1)'; ctx.lineWidth = 1;
+    const cs = 12;
+    for (let y = h*.07; y < h*.95; y += cs) { ctx.beginPath(); ctx.moveTo(cx-lw*2,y); ctx.lineTo(cx+lw*2,y); ctx.stroke(); }
+    for (let x = cx-lw*2; x < cx+lw*2; x += cs) { ctx.beginPath(); ctx.moveTo(x,h*.07); ctx.lineTo(x,h*.95); ctx.stroke(); }
+    ctx.restore();
+  }
+}
+
+/* COAT */
+function gCoat(ctx, w, h, fill) {
+  const cx = w*.5;
+  shadow(ctx); ctx.fillStyle = fill;
+  // Left panel + sleeve
+  ctx.beginPath();
+  ctx.moveTo(cx, h*.10); ctx.lineTo(cx-w*.12, h*.07); ctx.lineTo(cx-w*.20, h*.16);
+  ctx.lineTo(cx-w*.16, h*.23); ctx.lineTo(cx-w*.30, h*.10);
+  ctx.lineTo(cx-w*.42, h*.18); ctx.lineTo(cx-w*.42, h*.42);
+  ctx.lineTo(cx-w*.34, h*.44); ctx.quadraticCurveTo(cx-w*.28,h*.38, cx-w*.28,h*.48);
+  ctx.lineTo(cx-w*.28, h*.93); ctx.lineTo(cx-w*.02, h*.93); ctx.lineTo(cx-w*.02, h*.22);
+  ctx.closePath(); ctx.fill();
+  // Right panel + sleeve
+  ctx.beginPath();
+  ctx.moveTo(cx, h*.10); ctx.lineTo(cx+w*.12, h*.07); ctx.lineTo(cx+w*.20, h*.16);
+  ctx.lineTo(cx+w*.16, h*.23); ctx.lineTo(cx+w*.30, h*.10);
+  ctx.lineTo(cx+w*.42, h*.18); ctx.lineTo(cx+w*.42, h*.42);
+  ctx.lineTo(cx+w*.34, h*.44); ctx.quadraticCurveTo(cx+w*.28,h*.38, cx+w*.28,h*.48);
+  ctx.lineTo(cx+w*.28, h*.93); ctx.lineTo(cx+w*.02, h*.93); ctx.lineTo(cx+w*.02, h*.22);
+  ctx.closePath(); ctx.fill(); clearShadow(ctx);
+  // Buttons
+  [.44,.56,.68].forEach(p => { ctx.beginPath(); ctx.arc(cx,h*p,2.5,0,Math.PI*2); ctx.fillStyle='rgba(0,0,0,.22)'; ctx.fill(); });
+  // Belt
+  ctx.strokeStyle = 'rgba(0,0,0,.12)'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(cx-w*.28, h*.60); ctx.lineTo(cx+w*.28, h*.60); ctx.stroke();
+}
+
+/* BLAZER */
+function gBlazer(ctx, w, h, fill) {
+  const cx = w*.5;
+  shadow(ctx); ctx.fillStyle = fill;
+  ctx.beginPath();
+  ctx.moveTo(cx, h*.10); ctx.lineTo(cx-w*.11, h*.07); ctx.lineTo(cx-w*.19, h*.15);
+  ctx.lineTo(cx-w*.15, h*.22); ctx.lineTo(cx-w*.30, h*.09);
+  ctx.lineTo(cx-w*.41, h*.17); ctx.lineTo(cx-w*.41, h*.40);
+  ctx.lineTo(cx-w*.33, h*.42); ctx.quadraticCurveTo(cx-w*.27,h*.37, cx-w*.27,h*.46);
+  ctx.lineTo(cx-w*.27, h*.74); ctx.lineTo(cx-w*.02, h*.74); ctx.lineTo(cx-w*.02, h*.22);
+  ctx.closePath(); ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(cx, h*.10); ctx.lineTo(cx+w*.11, h*.07); ctx.lineTo(cx+w*.19, h*.15);
+  ctx.lineTo(cx+w*.15, h*.22); ctx.lineTo(cx+w*.30, h*.09);
+  ctx.lineTo(cx+w*.41, h*.17); ctx.lineTo(cx+w*.41, h*.40);
+  ctx.lineTo(cx+w*.33, h*.42); ctx.quadraticCurveTo(cx+w*.27,h*.37, cx+w*.27,h*.46);
+  ctx.lineTo(cx+w*.27, h*.74); ctx.lineTo(cx+w*.02, h*.74); ctx.lineTo(cx+w*.02, h*.22);
+  ctx.closePath(); ctx.fill(); clearShadow(ctx);
+  [.42,.56].forEach(p => { ctx.beginPath(); ctx.arc(cx,h*p,2.2,0,Math.PI*2); ctx.fillStyle='rgba(0,0,0,.20)'; ctx.fill(); });
+  ctx.strokeStyle = 'rgba(0,0,0,.12)'; ctx.lineWidth = .8;
+  ctx.strokeRect(cx+w*.08, h*.46, w*.13, h*.06);
+}
+
+/* JACKET */
+function gJacket(ctx, w, h, fill) {
+  const cx = w*.5;
+  shadow(ctx); ctx.fillStyle = fill;
+  ctx.beginPath();
+  ctx.moveTo(cx-w*.04, h*.08); ctx.lineTo(cx-w*.30, h*.08);
+  ctx.lineTo(cx-w*.41, h*.17); ctx.lineTo(cx-w*.41, h*.42);
+  ctx.lineTo(cx-w*.33, h*.44); ctx.quadraticCurveTo(cx-w*.27,h*.38, cx-w*.27,h*.48);
+  ctx.lineTo(cx-w*.27, h*.80); ctx.lineTo(cx-w*.04, h*.80); ctx.lineTo(cx-w*.04, h*.08);
+  ctx.closePath(); ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(cx+w*.04, h*.08); ctx.lineTo(cx+w*.30, h*.08);
+  ctx.lineTo(cx+w*.41, h*.17); ctx.lineTo(cx+w*.41, h*.42);
+  ctx.lineTo(cx+w*.33, h*.44); ctx.quadraticCurveTo(cx+w*.27,h*.38, cx+w*.27,h*.48);
+  ctx.lineTo(cx+w*.27, h*.80); ctx.lineTo(cx+w*.04, h*.80); ctx.lineTo(cx+w*.04, h*.08);
+  ctx.closePath(); ctx.fill(); clearShadow(ctx);
+  // Zip
+  ctx.strokeStyle = 'rgba(255,255,255,.18)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(cx, h*.08); ctx.lineTo(cx, h*.80); ctx.stroke();
+  // Pockets
+  ctx.strokeStyle = 'rgba(0,0,0,.14)'; ctx.lineWidth = .8;
+  ctx.strokeRect(cx+w*.08, h*.28, w*.13, h*.09);
+  ctx.strokeRect(cx-w*.21, h*.28, w*.13, h*.09);
+  // Zip pulls (dots)
+  ctx.beginPath(); ctx.arc(cx, h*.80, 3, 0, Math.PI*2); ctx.fillStyle = 'rgba(255,255,255,.2)'; ctx.fill();
+}
+
+/* ─── DRAW PRODUCT CANVAS ───────────────────────────── */
+function drawProduct(canvas, p) {
+  const d = setupCanvas(canvas);
+  if (!d) return;
+  const { ctx, w, h } = d;
+  // BG
+  ctx.fillStyle = p.bg; ctx.fillRect(0, 0, w, h);
+  // Texture
+  weaveTexture(ctx, w, h, 'rgba(0,0,0,.5)', 5, .12);
+  // Garment
+  const isWide = p.detail === 'wide';
+  const hasCheck = p.detail === 'check';
+  switch (p.shape) {
+    case 'shirt':    gShirt(ctx, w, h, p.g, p.detail || 'standard'); break;
+    case 'rollneck': gRollneck(ctx, w, h, p.g); break;
+    case 'crew':     gCrew(ctx, w, h, p.g, p.detail === 'waffle'); break;
+    case 'cardigan': gCardigan(ctx, w, h, p.g); break;
+    case 'trouser':  gTrouser(ctx, w, h, p.g, isWide, hasCheck); break;
+    case 'coat':     gCoat(ctx, w, h, p.g); break;
+    case 'blazer':   gBlazer(ctx, w, h, p.g); break;
+    case 'jacket':   gJacket(ctx, w, h, p.g); break;
+  }
+  vignette(ctx, w, h, .22);
+}
+
+/* ─── CATEGORY TILES ────────────────────────────────── */
+function drawCategoryTile(canvas, cat) {
+  const d = setupCanvas(canvas);
+  if (!d) return;
+  const { ctx, w, h } = d;
+  const configs = {
+    shirts:    { bg:'#A89880', g:'#D4C4A8', shape:'shirt', detail:'collarless' },
+    knitwear:  { bg:'#1C2E40', g:'#2E4860', shape:'rollneck' },
+    trousers:  { bg:'#2A3C30', g:'#3C5444', shape:'trouser' },
+    outerwear: { bg:'#222220', g:'#383836', shape:'coat' },
+  };
+  const c = configs[cat];
+  if (!c) return;
+  ctx.fillStyle = c.bg; ctx.fillRect(0, 0, w, h);
+  weaveTexture(ctx, w, h, 'rgba(0,0,0,.5)', 5, .14);
+  switch (c.shape) {
+    case 'shirt':    gShirt(ctx, w, h, c.g, c.detail || 'standard'); break;
+    case 'rollneck': gRollneck(ctx, w, h, c.g); break;
+    case 'trouser':  gTrouser(ctx, w, h, c.g, false, false); break;
+    case 'coat':     gCoat(ctx, w, h, c.g); break;
+  }
+  vignette(ctx, w, h, .30);
+}
+
+/* ─── STORY CANVAS (herringbone) ─────────────────────── */
+function drawStory(canvas) {
+  const d = setupCanvas(canvas);
+  if (!d) return;
+  const { ctx, w, h } = d;
+  const c = ['#1E2E22','#2C4232','#3C5441','#4A6852'];
+  ctx.fillStyle = c[0]; ctx.fillRect(0, 0, w, h);
+  const sz = 6;
+  for (let y = -sz*2; y < h+sz*4; y += sz*2) {
+    for (let x = -sz*2; x < w+sz*4; x += sz*4) {
+      const p = Math.floor((x/(sz*4)+y/(sz*2)))%4;
+      ctx.globalAlpha = .9; ctx.fillStyle = c[p];
+      ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+sz,y); ctx.lineTo(x+sz*2,y+sz); ctx.lineTo(x+sz,y+sz); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = c[(p+1)%4];
+      ctx.beginPath(); ctx.moveTo(x+sz*2,y); ctx.lineTo(x+sz*3,y); ctx.lineTo(x+sz*2,y+sz); ctx.lineTo(x+sz,y+sz); ctx.closePath(); ctx.fill();
+    }
+  }
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = 'rgba(155,125,60,.1)'; ctx.lineWidth = 1;
+  for (let dd = -h; dd < w+h; dd += 16) { ctx.beginPath(); ctx.moveTo(dd,0); ctx.lineTo(dd+h,h); ctx.stroke(); }
+  // Overlay: linen blazer silhouette
+  gBlazer(ctx, w, h, 'rgba(200,185,150,.18)');
+  vignette(ctx, w, h, .45);
+}
+
+/* ─── LOOKBOOK CANVASES ─────────────────────────────── */
+function drawLookMain(canvas) {
+  const d = setupCanvas(canvas);
+  if (!d) return;
+  const { ctx, w, h } = d;
+  // Deep tweed background
+  ctx.fillStyle = '#2C3020'; ctx.fillRect(0, 0, w, h);
+  // Tweed flecks
+  const fc = ['#3C4230','#4C5440','#24281A','#6A7258','#908A60'];
+  for (let i = 0; i < w*h*.08; i++) {
+    ctx.fillStyle = fc[Math.floor(Math.random()*fc.length)];
+    ctx.globalAlpha = Math.random()*.5+.2;
+    const sz = Math.random()*4+1;
+    ctx.fillRect(Math.random()*w, Math.random()*h, sz, sz);
+  }
+  ctx.globalAlpha = 1;
+  // Coat illustration
+  gCoat(ctx, w, h, 'rgba(80,96,64,.85)');
+  // Subtle herringbone overlay
+  ctx.globalAlpha = .04;
+  const sz2 = 5;
+  for (let y2 = 0; y2 < h; y2 += sz2*2) {
+    for (let x2 = 0; x2 < w; x2 += sz2*4) {
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath(); ctx.moveTo(x2,y2); ctx.lineTo(x2+sz2,y2); ctx.lineTo(x2+sz2*2,y2+sz2); ctx.lineTo(x2+sz2,y2+sz2); ctx.closePath(); ctx.fill();
+    }
+  }
+  ctx.globalAlpha = 1;
+  vignette(ctx, w, h, .38);
+}
+
+function drawLook2(canvas) {
+  const d = setupCanvas(canvas);
+  if (!d) return;
+  const { ctx, w, h } = d;
+  // Linen texture — warm stripe
+  const grad = ctx.createLinearGradient(0,0,w,h);
+  grad.addColorStop(0, '#D4C8A0'); grad.addColorStop(1, '#BEB080');
+  ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
+  weaveTexture(ctx, w, h, 'rgba(0,0,0,.4)', 4, .14);
+  gShirt(ctx, w, h, '#F0E8D0', 'collarless');
+  vignette(ctx, w, h, .20);
+}
+
+function drawLook3(canvas) {
+  const d = setupCanvas(canvas);
+  if (!d) return;
+  const { ctx, w, h } = d;
+  ctx.fillStyle = '#B08A58'; ctx.fillRect(0,0,w,h);
+  weaveTexture(ctx, w, h, 'rgba(60,20,0,.4)', 5, .15);
+  gCardigan(ctx, w, h, '#DEB880');
+  vignette(ctx, w, h, .22);
+}
+
+function drawLook4(canvas) {
+  const d = setupCanvas(canvas);
+  if (!d) return;
+  const { ctx, w, h } = d;
+  ctx.fillStyle = '#3A2848'; ctx.fillRect(0,0,w,h);
+  weaveTexture(ctx, w, h, 'rgba(0,0,0,.5)', 6, .18);
+  gTrouser(ctx, w, h, '#5C4070', true, false);
+  // Horizontal satin stripe
+  ctx.globalAlpha = .06;
+  for (let y = 0; y < h; y += 6) { ctx.fillStyle='rgba(255,255,255,1)'; ctx.fillRect(0,y,w,1); }
+  ctx.globalAlpha = 1;
+  vignette(ctx, w, h, .26);
+}
+
+function drawLook5(canvas) {
+  const d = setupCanvas(canvas);
+  if (!d) return;
+  const { ctx, w, h } = d;
+  ctx.fillStyle = '#183040'; ctx.fillRect(0,0,w,h);
+  weaveTexture(ctx, w, h, 'rgba(0,0,0,.5)', 5, .18);
+  gRollneck(ctx, w, h, '#2C4870');
+  vignette(ctx, w, h, .25);
+}
+
+/* ─── RENDER ALL CANVASES ───────────────────────────── */
+function drawAll() {
+  // Category tiles
+  ['shirts','knitwear','trousers','outerwear'].forEach(cat => {
+    const c = document.getElementById('cat-'+cat);
+    if (c) drawCategoryTile(c, cat);
+  });
+  // Story
+  const sc = document.getElementById('story-canvas');
+  if (sc) drawStory(sc);
+  // Lookbook
+  const lm = document.getElementById('look-main'); if (lm) drawLookMain(lm);
+  const l2 = document.getElementById('look-2');    if (l2) drawLook2(l2);
+  const l3 = document.getElementById('look-3');    if (l3) drawLook3(l3);
+  const l4 = document.getElementById('look-4');    if (l4) drawLook4(l4);
+  const l5 = document.getElementById('look-5');    if (l5) drawLook5(l5);
+  // Products
+  document.querySelectorAll('#products-grid canvas').forEach(c => {
+    const id = parseInt(c.dataset.pid);
+    const p = PRODUCTS.find(x => x.id === id);
+    if (p) drawProduct(c, p);
+  });
+}
+
+/* ─── PHOTOS (drawn illustration stays as fallback) ─── */
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const productPhoto = p => `images/products/${slug(p.name)}.jpg`;
+
+const SCENE_PHOTOS = {
+  'cat-shirts':    ['images/categories/shirts.jpg',    'Linen and cotton shirts'],
+  'cat-knitwear':  ['images/categories/knitwear.jpg',  'Merino and cashmere knitwear'],
+  'cat-trousers':  ['images/categories/trousers.jpg',  'Wool and linen trousers'],
+  'cat-outerwear': ['images/categories/outerwear.jpg', 'Wool coats and jackets'],
+  'story-canvas':  ['images/story/atelier.jpg',        'Tailor at work in the Lisbon atelier'],
+  'look-main':     ['images/lookbook/look-1.jpg',      'Boiled wool coat, AW26 lookbook'],
+  'look-2':        ['images/lookbook/look-2.jpg',      'Linen collarless shirt'],
+  'look-3':        ['images/lookbook/look-3.jpg',      'Cashmere cardigan'],
+  'look-4':        ['images/lookbook/look-4.jpg',      'Flannel wide-leg trouser'],
+  'look-5':        ['images/lookbook/look-5.jpg',      'Merino rolled-neck'],
+};
+
+function attachScenePhotos() {
+  Object.entries(SCENE_PHOTOS).forEach(([id, [src, alt]]) => {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+    const img = new Image();
+    img.className = 'photo';
+    img.alt = alt;
+    img.loading = 'lazy';
+    img.onload = () => img.classList.add('loaded');
+    img.onerror = () => img.remove();
+    img.src = src;
+    canvas.after(img);
+  });
+}
+
+/* ─── RENDER PRODUCTS ───────────────────────────────── */
+function renderProducts() {
+  const grid = document.getElementById('products-grid');
+  grid.innerHTML = PRODUCTS.map(p => {
+    const bClass = p.badge==='New'?'badge-new':p.badge==='Ltd'?'badge-ltd':'badge-sale';
+    return `<article class="product-card fade-up" data-cat="${p.cat}" data-id="${p.id}" tabindex="0" role="button" aria-label="${p.name} — ${p.price}">
+      <div class="product-thumb">
+        <canvas data-pid="${p.id}"></canvas>
+        <img class="photo" src="${productPhoto(p)}" alt="${p.name} in ${p.material}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.remove()">
+        ${p.badge?`<span class="product-badge ${bClass}">${p.badge}</span>`:''}
+        <button class="product-quick" aria-label="Quick add ${p.name}">Add to Bag</button>
+      </div>
+      <div class="product-name">${p.name}</div>
+      <div class="product-material">${p.material}</div>
+      <div class="product-price-row"><span class="product-price">${p.price}</span>${p.was?`<span class="product-price-was">${p.was}</span>`:''}</div>
+    </article>`;
+  }).join('');
+  grid.querySelectorAll('.product-quick').forEach(btn => {
+    btn.addEventListener('click', e => { e.stopPropagation(); addToCart(btn.closest('[data-id]').dataset.id); });
+  });
+  requestAnimationFrame(() => {
+    grid.querySelectorAll('canvas').forEach(c => {
+      const p = PRODUCTS.find(x => x.id === parseInt(c.dataset.pid));
+      if (p) drawProduct(c, p);
+    });
+  });
+}
+
+/* ─── RENDER MATERIALS ──────────────────────────────── */
+function renderMaterials() {
+  const leaf = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12M12 12C9 7 4.5 5 2 4c0 6 3 10 10 8M12 12c3-5 7.5-8 10-8 0 6-3 10-10 8"/></svg>`;
+  document.getElementById('materials-grid').innerHTML = MATERIALS.map(m =>
+    `<div class="material-card"><div class="material-icon">${leaf}</div><div class="material-name">${m.name}</div><div class="material-origin">${m.origin}</div><div class="material-desc">${m.desc}</div></div>`
+  ).join('');
+}
+
+/* ─── FILTER ────────────────────────────────────────── */
+function initFilter() {
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      tab.classList.add('active'); tab.setAttribute('aria-selected','true');
+      const f = tab.dataset.filter;
+      document.querySelectorAll('.product-card').forEach(card => { card.hidden = f !== 'all' && card.dataset.cat !== f; });
+    });
+  });
+  document.querySelectorAll('[data-cat-filter]').forEach(tile => {
+    tile.addEventListener('click', e => {
+      e.preventDefault();
+      const f = tile.dataset.catFilter;
+      document.querySelectorAll('.filter-tab').forEach(t => {
+        const m = t.dataset.filter === f;
+        t.classList.toggle('active', m); t.setAttribute('aria-selected', m ? 'true' : 'false');
+      });
+      document.querySelectorAll('.product-card').forEach(card => { card.hidden = card.dataset.cat !== f; });
+      document.getElementById('collections').scrollIntoView({ behavior:'smooth' });
+    });
+  });
+}
+
+/* ─── NAV DRAWER ────────────────────────────────────── */
+function initNav() {
+  const burger = document.getElementById('burger-btn');
+  const drawer = document.getElementById('nav-drawer');
+  const open = () => { drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); burger.classList.add('open'); burger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; };
+  const close = () => { drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); burger.classList.remove('open'); burger.setAttribute('aria-expanded','false'); document.body.style.overflow=''; };
+  burger.addEventListener('click', () => drawer.classList.contains('open') ? close() : open());
+  document.getElementById('drawer-backdrop').addEventListener('click', close);
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+}
+
+/* ─── CART ──────────────────────────────────────────── */
+let cartCount = 2;
+function addToCart(id) {
+  cartCount++;
+  const el = document.getElementById('cart-count');
+  el.textContent = cartCount; el.classList.add('bump');
+  setTimeout(() => el.classList.remove('bump'), 200);
+  const p = PRODUCTS.find(x => x.id == id);
+  showToast(p ? `${p.name} added to bag` : 'Added to bag');
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ─── NEWSLETTER ────────────────────────────────────── */
+function initNewsletter() {
+  document.getElementById('nl-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const inp = e.target.querySelector('input');
+    if (!inp.validity.valid) { inp.focus(); return; }
+    e.target.style.display = 'none';
+    document.getElementById('nl-success').style.display = 'block';
+  });
+}
+
+/* ─── SCROLL FADE ───────────────────────────────────── */
+function initFadeUps() {
+  if (!('IntersectionObserver' in window)) { document.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible')); return; }
+  const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }), { threshold:.1, rootMargin:'0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+}
+
+/* ─── RESIZE ────────────────────────────────────────── */
+let resizeTimer;
+window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(drawAll, 160); });
+
+/* ─── INIT ──────────────────────────────────────────── */
+renderProducts();
+renderMaterials();
+attachScenePhotos();
+initFilter();
+initNav();
+initNewsletter();
+initFadeUps();
+window.addEventListener('load', drawAll);
+</script>
+</body>
+</html>
